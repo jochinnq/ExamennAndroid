@@ -1,9 +1,11 @@
 package com.example.examenandroidactivity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 
@@ -20,6 +22,19 @@ class MainActivity : AppCompatActivity() {
 
         val ageInput = findViewById<EditText>(R.id.ageInput)
         val ageError = findViewById<TextView>(R.id.ageError)
+
+        val nextButton = findViewById<Button>(R.id.nextButton)
+        nextButton.setOnClickListener {
+            val name = nameInput.text.toString()
+            val email = emailInput.text.toString()
+            val age = ageInput.text.toString().toIntOrNull() ?: 0
+
+            if (name.length >= 3 && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() && age in 18..99) {
+                val intent = Intent(this, PokemonListActivity::class.java)
+                intent.putExtra("USER_NAME", name)
+                startActivity(intent)
+            }
+        }
 
         nameInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
